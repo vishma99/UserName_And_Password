@@ -1,0 +1,38 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./page/Login";
+import Home from "./page/Home";
+import Register from "./page/Register";
+import Forget from "./page/ForgetPassword";
+import VerifyForgetPassword from "./page/VerifyForgetPassword";
+import Verify from "./page/Verift";
+import ProtectedRoute from "./components/ProtectedRoute";
+
+export default function App() {
+  return (
+    <>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+
+          {/* 🟢 Home පිටුව ආරක්ෂා කර ඇති ආකාරය */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route path="/register" element={<Register />} />
+          <Route path="/forget" element={<Forget />} />
+          <Route
+            path="/verifyForgetPassword"
+            element={<VerifyForgetPassword />}
+          />
+          <Route path="/verify" element={<Verify />} />
+        </Routes>
+      </Router>
+    </>
+  );
+}

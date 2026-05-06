@@ -1,0 +1,12 @@
+# Node.js(backend)
+
+backend/node_modules/
+backEnd/.env
+
+# react.js(frontend)
+frontEnd/node_modules/
+frontEnd/.env
+
+# log
+.log
+

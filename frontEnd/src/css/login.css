@@ -1,0 +1,128 @@
+/* මුළු පිටුවේම පසුබිම - Dark Vibe */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  /* තද අළු සහ කළු පැහැති gradient එකක් */
+  background: radial-gradient(circle, #1a1c1e 0%, #0f1011 100%);
+  color: #e0e0e0;
+}
+
+/* ප්‍රධාන Container එක */
+.login-container {
+  background-color: #1e2124; /* Card එකේ පසුබිම */
+  width: 350px;
+  padding: 40px;
+  border-radius: 15px;
+  /* Neon මෘදු හෙවනැල්ලක් */
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 123, 255, 0.05);
+  text-align: center;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  border: 1px solid #2d3136; /* ඉතා සිහින් border එකක් */
+}
+
+.login-container:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(0, 123, 255, 0.1);
+}
+
+/* මාතෘකාව */
+h2 {
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+/* Input Boxes */
+input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-top: 8px;
+  background-color: #2b2f33; /* Input එකේ අඳුරු පසුබිම */
+  border: 1px solid #3e444a;
+  border-radius: 8px;
+  box-sizing: border-box;
+  outline: none;
+  color: #ffffff; /* ටයිප් කරන අකුරු සුදු පැහැයෙන් */
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+
+input::placeholder {
+  color: #888;
+}
+
+input:focus {
+  border-color: #007bff;
+  background-color: #32373c;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Button එක */
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 25px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition:
+    background-color 0.3s,
+    transform 0.2s,
+    box-shadow 0.3s;
+}
+
+button:hover {
+  background-color: #0069d9;
+  box-shadow: 0 0 15px rgba(0, 123, 255, 0.4);
+}
+
+button:active {
+  transform: scale(0.96);
+}
+
+/* යටින් ඇති ලින්ක් (Login/Register here) */
+p {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 25px;
+}
+
+span {
+  color: #007bff; /* Link එකේ වර්ණය */
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    color 0.3s,
+    text-shadow 0.3s;
+}
+
+span:hover {
+  color: #3399ff;
+  text-decoration: none;
+  text-shadow: 0 0 8px rgba(51, 153, 255, 0.5);
+}
+
+/* Status Messages (Error/Success) */
+.status-message {
+  margin-top: 15px;
+  font-weight: 500;
+}
