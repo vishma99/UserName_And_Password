@@ -218,7 +218,7 @@ router.post("/register", async (req, res) => {
       <p>User <b>${username}</b> is waiting for your approval.</p>
       <br/>
       
-      <a href="http://localhost:5000/api/auth/approve-user/${newUser._id}" 
+      <a href="https://username-and-password.onrender.com/api/auth/approve-user/${newUser._id}" 
          style="background: #28a745; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;">
          Approve User Now
       </a>
