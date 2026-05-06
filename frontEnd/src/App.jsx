@@ -14,7 +14,6 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
 
-          {/* 🟢 Home පිටුව ආරක්ෂා කර ඇති ආකාරය */}
           <Route
             path="/"
             element={
