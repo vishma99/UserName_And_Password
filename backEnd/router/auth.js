@@ -6,8 +6,8 @@ import nodemailer from "nodemailer";
 const router = express.Router();
 
 const transporter = nodemailer.createTransport({
-  service: "process.env.SMTP_HOST",
-  port: "process.env.SMTP_PORT",
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
   secure: false,
   auth: {
     user: process.env.SMTP_USER,
