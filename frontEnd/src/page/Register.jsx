@@ -60,7 +60,7 @@ function Register() {
         <div>
           <input
             type="email"
-            placeholder="Choose Username"
+            placeholder="Choose Username (Email)"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required

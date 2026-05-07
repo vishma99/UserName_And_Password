@@ -74,7 +74,7 @@ function Login() {
         <div>
           <input
             type="email"
-            placeholder="Username"
+            placeholder="Username(Email)"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
