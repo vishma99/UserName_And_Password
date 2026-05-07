@@ -228,7 +228,12 @@ router.post("/register", async (req, res) => {
   `,
     };
     await transporter.sendMail(adminMailOptions);
-
+    transporter
+      .sendMail(userMailOptions)
+      .catch((err) => console.log("User Email Error:", err.message));
+    transporter
+      .sendMail(adminMailOptions)
+      .catch((err) => console.log("Admin Email Error:", err.message));
     res.json({
       success: true,
       message: "OTP sent! Waiting for verification and admin approval.",
