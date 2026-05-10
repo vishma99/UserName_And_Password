@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/login.css";
 import axios from "axios";
 
 export default function Home() {
+  const [showLogout, setShowLogout] = useState(false);
+  const navigate = useNavigate();
   const [cards, setCards] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deletePassword, setDeletePassword] = useState("");
+  const [selectedCardId, setSelectedCardId] = useState(null);
   const [tempData, setTempData] = useState({
     header: "",
     username: "",
@@ -14,6 +20,12 @@ export default function Home() {
   });
 
   const API_BASE_URL = import.meta.env.VITE_API_URL;
+  const handleLogout = () => {
+    // මෙහිදී ඔබගේ ලොගින් දත්ත (Token/LocalStorage) ඉවත් කරන්න
+    localStorage.removeItem("isLoggedIn");
+    navigate("/login");
+  };
+
   const API_URL = `${API_BASE_URL}/cards`;
   const currentDateTime = new Date().toLocaleString();
 
@@ -45,6 +57,45 @@ export default function Home() {
     });
     setIsModalOpen(true);
   };
+  useEffect(() => {
+    const closeLogout = (e) => {
+      if (!e.target.closest(".logo-wrapper")) {
+        setShowLogout(false);
+      }
+    };
+    window.addEventListener("click", closeLogout);
+    return () => window.removeEventListener("click", closeLogout);
+  }, []);
+
+  useEffect(() => {
+    // 1. පරිශීලකයා ලොගින් වී ඇත්දැයි පරීක්ෂා කරන්න
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+
+    // 2. ලොගින් වී නැතිනම් ඔහුව ලොගින් පිටුවට යවන්න
+    if (!isLoggedIn) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  // this tab remove
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      // පරිශීලකයා වෙනත් Tab එකකට ගියහොත් හෝ Browser එක Minimize කළහොත්
+      if (document.visibilityState === "hidden") {
+        console.log("User left the tab. Logging out...");
+        handleLogout(); // ඔබ කලින් සෑදූ Logout function එක මෙතැනදී කැඳවනු ලැබේ
+      }
+    };
+
+    // Event listener එක එක් කිරීම
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // Component එකෙන් ඉවත් වන විට listener එක ඉවත් කිරීම (Cleanup)
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [navigate]);
 
   const saveCard = async () => {
     if (tempData.header && tempData.username) {
@@ -74,7 +125,40 @@ export default function Home() {
     if (cards.length === 0) return alert("Enter the Data.");
     window.print();
   };
+  const openDeleteConfirm = (id, e) => {
+    e.stopPropagation();
+    setSelectedCardId(id);
+    setIsDeleteModalOpen(true);
+  };
 
+  const confirmAndDelete = async () => {
+    if (!deletePassword) return alert("Please enter password.");
+
+    try {
+      const userStr = localStorage.getItem("user");
+      const loggedInUser = JSON.parse(userStr);
+      const username = loggedInUser.username;
+
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/verify-and-delete/${selectedCardId}`,
+        { username, password: deletePassword },
+      );
+
+      if (response.data.success) {
+        alert("Card deleted successfully!");
+        fetchCards();
+        closeDeleteModal();
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Error deleting card.");
+    }
+  };
+
+  const closeDeleteModal = () => {
+    setIsDeleteModalOpen(false);
+    setDeletePassword("");
+    setSelectedCardId(null);
+  };
   return (
     <div className="home-container">
       {/* -----------------------------------------------------------
@@ -131,6 +215,54 @@ export default function Home() {
           >
             DOWNLOAD / PRINT ALL
           </button>
+
+          <div className="logo-wrapper">
+            <img
+              src="/logo/logo.jpg"
+              alt="my logo"
+              onClick={() => setShowLogout(!showLogout)}
+              className="logoimage"
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "20px",
+                cursor: "pointer",
+                border: showLogout ? "2px solid #ff4d4d" : "none",
+              }}
+            />
+            {showLogout && (
+              <div
+                style={{
+                  position: "absolute",
+                  top: "70px",
+                  right: "0",
+                  background: "#1e2124",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 15px rgba(0,0,0,0.5)",
+                  border: "1px solid #333",
+                  textAlign: "center",
+                  minWidth: "100px",
+                }}
+              >
+                <button
+                  onClick={handleLogout}
+                  style={{
+                    background: "#dc3545",
+                    color: "#fff",
+                    border: "none",
+                    padding: "8px 15px",
+                    borderRadius: "5px",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    width: "100%",
+                  }}
+                >
+                  LOGOUT
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Modal Popup */}
@@ -270,7 +402,7 @@ export default function Home() {
               <div
                 key={card.id}
                 className="responsive-card-item"
-                onClick={() => openEditModal(card)}
+                // onClick={() => openEditModal(card)}
               >
                 <h2 className="web-card-header">{card.header}</h2>
                 <div className="web-card-body">
@@ -285,6 +417,21 @@ export default function Home() {
                       <strong>Remark:</strong> {card.remark}
                     </p>
                   )}
+                </div>
+
+                <div className="card-actions">
+                  <button
+                    className="edit-btn"
+                    onClick={() => openEditModal(card)}
+                  >
+                    EDIT
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={(e) => openDeleteConfirm(card.id, e)}
+                  >
+                    DELETE
+                  </button>
                 </div>
               </div>
             ))
@@ -336,6 +483,92 @@ export default function Home() {
           ))}
         </div>
       </div>
+      {isDeleteModalOpen && (
+        <div
+          className="modal-overlay"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.85)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 2000,
+          }}
+        >
+          <div
+            style={{
+              background: "#1e2124",
+              padding: "30px",
+              borderRadius: "12px",
+              width: "350px",
+              textAlign: "center",
+              border: "1px solid #444",
+            }}
+          >
+            <h3 style={{ color: "#fff", marginBottom: "20px" }}>
+              Confirm Deletion
+            </h3>
+            <p style={{ color: "#bbb", fontSize: "14px" }}>
+              Enter login password to delete this card:
+            </p>
+
+            <input
+              type="password" // 👈 මෙතැනින් password එක hide වේ
+              value={deletePassword}
+              onChange={(e) => setDeletePassword(e.target.value)}
+              placeholder="Password"
+              style={{
+                width: "100%",
+                padding: "12px",
+                borderRadius: "6px",
+                border: "1px solid #555",
+                background: "#2b2f33",
+                color: "#fff",
+                marginBottom: "20px",
+                boxSizing: "border-box",
+              }}
+            />
+
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                onClick={confirmAndDelete}
+                style={{
+                  background: "#dc3545",
+                  color: "#fff",
+                  flex: 1,
+                  padding: "10px",
+                  border: "none",
+                  borderRadius: "6px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                DELETE
+              </button>
+
+              <button
+                onClick={closeDeleteModal}
+                style={{
+                  background: "#666",
+                  color: "#fff",
+                  flex: 1,
+                  padding: "10px",
+                  border: "none",
+                  borderRadius: "6px",
+                  fontWeight: "bold",
+                  cursor: "pointer",
+                }}
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
 

@@ -2,6 +2,7 @@ import express from "express";
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import SibApiV3Sdk from "sib-api-v3-sdk";
+import Card from "../models/Card.js";
 
 const router = express.Router();
 
@@ -194,9 +195,42 @@ router.post("/login", async (req, res) => {
         .status(403)
         .json({ success: false, message: "Pending admin approval." });
     }
-    res.json({ success: true, message: "Login successful!" });
+    res.json({
+      success: true,
+      user: { username: user.username },
+      message: "Login successful!",
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
+// router/auth.js තුළ (හෝ cards.js)
+
+// router/auth.js තුළ තිබිය යුතු නිවැරදි කේතය
+router.post("/verify-and-delete/:id", async (req, res) => {
+  const { username, password } = req.body;
+  const cardId = req.params.id;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Incorrect password!" });
+    }
+
+    await Card.findByIdAndDelete(cardId);
+    res.json({ success: true, message: "Card deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 });
 

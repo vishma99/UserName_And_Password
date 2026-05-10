@@ -1,14 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../css/login.css";
 
 function Login() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
 
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem("isLoggedIn");
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [navigate]);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -27,6 +33,7 @@ function Login() {
 
       if (response.ok && data.success) {
         localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("isLoggedIn", "true");
         navigate("/");
       } else {
         // අසාර්ථක නම් වැරැද්ද පෙන්වන්න

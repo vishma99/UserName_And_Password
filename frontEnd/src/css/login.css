@@ -126,3 +126,48 @@ span:hover {
   margin-top: 15px;
   font-weight: 500;
 }
+.logo-wrapper {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  z-index: 1001;
+}
+/* Card එක ඇතුළත බොත්තම් පෙළගැස්වීම */
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  justify-content: flex-end;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+
+.edit-btn {
+  background: #007bff;
+  color: white;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  opacity: 0.8;
+}
+
+/* කලින් තිබූ responsive-card-item එකේ onClick එක ඉවත් කළ නිසා hover effect එක මෙසේ වෙනස් කරන්න */
+.responsive-card-item {
+  /* ... පරණ CSS ... */
+  cursor: default; /* pointer එක ඉවත් කරන්න */
+}
