@@ -27,12 +27,11 @@ const Laptop = () => {
   // 3. State for form data
   const [formData, setFormData] = useState({
     username: "",
-    laptopPrefix: "IE/LAPTOP/laptop/",
+    laptopPrefix: "IE/LAPTOP/",
     laptopNumber: "",
     date: "",
     section: "",
 
-    location: "",
     description: "",
     Model: "",
     SerialNumber: "",
@@ -188,11 +187,11 @@ const Laptop = () => {
         // Form Reset
         setFormData({
           username: "",
-          laptopPrefix: "IE/LAPTOP/PC/",
+          laptopPrefix: "IE/LAPTOP/",
           laptopNumber: "",
           date: "",
           section: "",
-          location: "",
+
           description: "",
           Model: "",
           SerialNumber: "",
@@ -329,7 +328,7 @@ const Laptop = () => {
                 <th>User Name</th>
                 <th>Build Date</th>
                 <th>Section</th>
-                <th>Location</th>
+
                 <th>Description</th>
                 <th>Model</th>
                 <th>Serial Number</th>
@@ -383,18 +382,6 @@ const Laptop = () => {
                       </>
                     ) : (
                       item.section
-                    )}
-                  </td>
-                  <td>
-                    {item.location.includes("update") ? (
-                      <>
-                        <div>{item.location.split(" (")[0]}</div>
-                        <small style={{ color: "#ffc107", display: "block" }}>
-                          ({item.location.split(" (")[1]}
-                        </small>
-                      </>
-                    ) : (
-                      item.location
                     )}
                   </td>
                   <td>
@@ -492,8 +479,8 @@ const Laptop = () => {
                     }}
                     disabled={editingId !== null}
                   >
-                    <option value="IE/LAPTOP/laptop/">IE/LAPTOP/laptop/</option>
-                    {/* <option value="IE/LAPTOP/laptop/">IE/EVENT/LAPTOP/</option> */}
+                    <option value="IE/LAPTOP/">IE/LAPTOP/</option>
+                    {/* <option value="IE/LAPTOP/">IE/EVENT/LAPTOP/</option> */}
                   </select>
 
                   {/* 2. අංක 3 ටයිප් කරන කොටස */}
@@ -556,19 +543,6 @@ const Laptop = () => {
                   <option value="stand by event">Stand By Event</option>
                   <option value="other">Other</option>
                 </select>
-                <label>Location</label>
-                <select
-                  className="inputStyle1"
-                  name="location"
-                  value={formData.location}
-                  onChange={handleChange}
-                  required
-                  style={{ cursor: "pointer" }}
-                >
-                  <option value="">Select Location</option>
-                  <option value="office">Office</option>
-                  <option value="event">Event</option>
-                </select>
 
                 <label>Description</label>
                 <input
@@ -621,7 +595,7 @@ const Laptop = () => {
                 <input
                   className="inputStyleSuccess"
                   type="text"
-                  name="Processor "
+                  name="Processor"
                   value={formData.Processor}
                   onChange={handleChange}
                 />
