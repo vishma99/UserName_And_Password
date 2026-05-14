@@ -6,8 +6,9 @@ import Forget from "./page/ForgetPassword";
 import VerifyForgetPassword from "./page/VerifyForgetPassword";
 import Verify from "./page/Verift";
 import ProtectedRoute from "./components/ProtectedRoute";
-// import MainHome from "./page/MainHome";
+import MainHome from "./page/MainHome";
 import Pc from "./page/Pc";
+import Laptop from "./page/Lapto";
 
 export default function App() {
   return (
@@ -24,19 +25,27 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route
+          <Route
             path="/main"
             element={
               <ProtectedRoute>
                 <MainHome />
               </ProtectedRoute>
             }
-          /> */}
+          />
           <Route
             path="/pc"
             element={
               <ProtectedRoute>
                 <Pc />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/laptop"
+            element={
+              <ProtectedRoute>
+                <Laptop />
               </ProtectedRoute>
             }
           />

@@ -1,15 +1,25 @@
 /* Main Home Styles */
+
+.bodyContainer {
+  justify-content: center;
+  align-items: center;
+  max-height: 100vh;
+}
 .main-home-container {
   padding: 40px;
   text-align: center;
   background-color: #0f1011; /* Dark background */
   min-height: 80vh;
+  max-height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
 .home-title {
   color: #fff;
   margin-bottom: 40px;
   font-size: 2rem;
+  margin-top: 15%;
 }
 
 .box-wrapper {

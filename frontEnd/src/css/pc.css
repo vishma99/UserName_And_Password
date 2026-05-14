@@ -237,11 +237,12 @@ select.inputStyle1 option {
 
 /* Scroll bar එකේ පෙනුම ලස්සන කිරීමට (Optional) */
 .table-container::-webkit-scrollbar {
-  height: 8px; /* තිරස් scroll bar එකේ උස */
+  height: 18px; /* තිරස් scroll bar එකේ උස */
 }
 
 .table-container::-webkit-scrollbar-thumb {
   background: #007bff;
+
   border-radius: 10px;
 }
 

@@ -26,10 +26,10 @@ const Navbar = () => {
       <nav className="navbar no-print">
         <div
           className="nav-logo"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/main")}
           style={{ cursor: "pointer" }}
         >
-          IMAGINE APP
+          HOME
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
@@ -39,7 +39,7 @@ const Navbar = () => {
           <span className="nav-link" onClick={() => navigate("/pc")}>
             PC Inventory
           </span>
-          <span className="nav-link" onClick={() => navigate("/")}>
+          <span className="nav-link" onClick={() => navigate("/laptop")}>
             Laptop Inventory
           </span>
 

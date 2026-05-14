@@ -174,7 +174,8 @@ export default function Home() {
             style={{
               padding: "30px",
               background: "#0f1011",
-              minHeight: "100vh",
+              marginBottom: "0",
+              // minHeight: "100vh",
               color: "#e0e0e0",
             }}
           >
@@ -184,7 +185,7 @@ export default function Home() {
                 display: "flex",
                 justifyContent: "center",
                 gap: "20px",
-                marginTop: "80px",
+                marginTop: "100px",
                 marginBottom: "40px",
               }}
             >

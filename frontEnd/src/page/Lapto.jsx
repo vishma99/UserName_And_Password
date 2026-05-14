@@ -7,7 +7,7 @@ import autoTable from "jspdf-autotable";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
-const Pc = () => {
+const Laptop = () => {
   // 1. State for the list of items
   const [items, setItems] = useState([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -17,7 +17,7 @@ const Pc = () => {
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletePassword, setDeletePassword] = useState("");
-  const [selectedPcId, setSelectedPcId] = useState(null);
+  const [selectedlaptopId, setSelectedlaptopId] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [editingId, setEditingId] = useState(null);
@@ -27,22 +27,20 @@ const Pc = () => {
   // 3. State for form data
   const [formData, setFormData] = useState({
     username: "",
-    pcPrefix: "IE/DESKTOP/PC/",
-    pcNumber: "",
+    laptopPrefix: "IE/LAPTOP/laptop/",
+    laptopNumber: "",
     date: "",
     section: "",
 
     location: "",
     description: "",
+    Model: "",
+    SerialNumber: "",
     Processor: "",
-    Motherboard: "",
     Ram: "",
-    GPU: "",
-    Cooler: "",
     Storage: "",
-    Casing: "",
-    PowerSupply: "",
     Other: "",
+
     Remark: "",
   });
   const handleLogout = () => {
@@ -84,26 +82,26 @@ const Pc = () => {
   // Handle Form Submission
   // Handle Form Submission
   useEffect(() => {
-    const fetchPcs = async () => {
+    const fetchlaptops = async () => {
       try {
-        const res = await axios.get(`${API_BASE_URL}/pcs/all`);
+        const res = await axios.get(`${API_BASE_URL}/laptops/all`);
         setItems(res.data);
       } catch (err) {
         console.log("Error fetching data");
       }
     };
-    fetchPcs();
+    fetchlaptops();
   }, []);
   const handleEdit = (item) => {
     if (!item) return;
 
     setEditingId(item._id); // MongoDB ID එක තබා ගැනීමට
 
-    // 🟢 මෙහිදී pcId එක කැබලි වලට කඩන්නේ නැතිව සම්පූර්ණ අගය ලබා දෙන්න
+    // 🟢 මෙහිදී laptopId එක කැබලි වලට කඩන්නේ නැතිව සම්පූර්ණ අගය ලබා දෙන්න
     setFormData({
       ...item,
-      pcPrefix: "", // PC ID වෙනස් නොකරන නිසා මේවා හිස්ව තැබිය හැක
-      pcNumber: item.pcId, // පරණ PC ID එකම පෙන්වීමට
+      laptopPrefix: "", // laptop ID වෙනස් නොකරන නිසා මේවා හිස්ව තැබිය හැක
+      laptopNumber: item.laptopId, // පරණ laptop ID එකම පෙන්වීමට
     });
 
     setIsModalOpen(true);
@@ -119,9 +117,9 @@ const Pc = () => {
     if (loading) return;
 
     const today = new Date().toISOString().split("T")[0];
-    const fullPcId = `${formData.pcPrefix}${formData.pcNumber.padStart(3, "0")}`;
+    const fulllaptopId = `${formData.laptopPrefix}${formData.laptopNumber.padStart(3, "0")}`;
 
-    let finalDataToSave = { ...formData, pcId: fullPcId };
+    let finalDataToSave = { ...formData, laptopId: fulllaptopId };
 
     // 🛠️ Edit කරන විට පරණ දත්ත වලට යටින් අලුත් දත්ත එකතු කිරීම
     if (editingId) {
@@ -131,15 +129,13 @@ const Pc = () => {
         const updatedFields = {};
 
         const hardwareFields = [
+          "Model",
+          "SerialNumber",
           "Processor",
-          "Motherboard",
           "Ram",
-          "GPU",
-          "Cooler",
           "Storage",
-          "Casing",
-          "PowerSupply",
           "Other",
+
           "Remark",
         ];
 
@@ -159,7 +155,11 @@ const Pc = () => {
           }
         });
 
-        finalDataToSave = { ...formData, ...updatedFields, pcId: fullPcId };
+        finalDataToSave = {
+          ...formData,
+          ...updatedFields,
+          laptopId: fulllaptopId,
+        };
       }
     }
 
@@ -168,38 +168,39 @@ const Pc = () => {
       let response;
       if (editingId) {
         response = await axios.put(
-          `${API_BASE_URL}/pcs/update/${editingId}`,
+          `${API_BASE_URL}/laptops/update/${editingId}`,
           finalDataToSave,
         );
       } else {
-        response = await axios.post(`${API_BASE_URL}/pcs/add`, finalDataToSave);
+        response = await axios.post(
+          `${API_BASE_URL}/laptops/add`,
+          finalDataToSave,
+        );
       }
 
       if (response.data.success) {
         alert(response.data.message);
         setIsSuccessModalOpen(false);
         setEditingId(null);
-        const res = await axios.get(`${API_BASE_URL}/pcs/all`);
+        const res = await axios.get(`${API_BASE_URL}/laptops/all`);
         setItems(res.data);
 
         // Form Reset
         setFormData({
           username: "",
-          pcPrefix: "IE/DESKTOP/PC/",
-          pcNumber: "",
+          laptopPrefix: "IE/LAPTOP/PC/",
+          laptopNumber: "",
           date: "",
           section: "",
           location: "",
           description: "",
+          Model: "",
+          SerialNumber: "",
           Processor: "",
-          Motherboard: "",
           Ram: "",
-          GPU: "",
-          Cooler: "",
           Storage: "",
-          Casing: "",
-          PowerSupply: "",
           Other: "",
+
           Remark: "",
         });
       }
@@ -210,7 +211,7 @@ const Pc = () => {
     }
   };
   const openDeleteConfirm = (id) => {
-    setSelectedPcId(id);
+    setSelectedlaptopId(id);
     setIsDeleteModalOpen(true);
   };
 
@@ -224,14 +225,14 @@ const Pc = () => {
 
       // Backend එකට Request එක යැවීම
       const response = await axios.post(
-        `${API_BASE_URL}/pcs/verify-and-delete/${selectedPcId}`,
+        `${API_BASE_URL}/laptops/verify-and-delete/${selectedlaptopId}`,
         { username, password: deletePassword },
       );
 
       if (response.data.success) {
         alert("Deleted successfully!");
         // Table එක Refresh කිරීම
-        const res = await axios.get(`${API_BASE_URL}/pcs/all`);
+        const res = await axios.get(`${API_BASE_URL}/laptops/all`);
         setItems(res.data);
         closeDeleteModal();
       }
@@ -243,37 +244,38 @@ const Pc = () => {
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
     setDeletePassword("");
-    setSelectedPcId(null);
+    setSelectedlaptopId(null);
   };
   const downloadPDF = () => {
     const doc = new jsPDF({ orientation: "landscape" });
 
     doc.setFontSize(18);
-    doc.text("Desktop PC Inventory Report", 14, 15);
+    doc.text("Desktop laptop Inventory Report", 14, 15);
     doc.setFontSize(10);
     doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 22);
 
     const tableColumn = [
-      "PC ID",
+      "Laltop ID",
       "Date",
       "User",
+      "Model",
+      "SerialNumber",
       "Processor",
-      "Motherboard",
       "Ram",
-      "GPU",
-      "Storge",
+      "Storage",
 
       "Remark",
     ];
 
     const tableRows = items.map((item) => [
-      item.pcId,
+      item.laptopId,
       item.date,
       item.username,
+      item.Model,
+      item.SerialNumber,
       item.Processor,
-      item.Motherboard,
       item.Ram,
-      item.GPU,
+
       item.Storage,
 
       item.Remark,
@@ -299,14 +301,14 @@ const Pc = () => {
       },
     });
 
-    doc.save(`PC_Report_${Date.now()}.pdf`);
+    doc.save(`laptop_Report_${Date.now()}.pdf`);
   };
   return (
     <>
       <div className="main1">
         <Navbar />
         <header className="mainHeader">
-          <h1>Desktop Pc Dashboard</h1>
+          <h1>Laptop Dashboard</h1>
 
           {/* බොත්තම් දෙක ළඟින් තැබීමට */}
           <button className="mainButton" onClick={() => setIsModalOpen(true)}>
@@ -323,21 +325,19 @@ const Pc = () => {
           <table className="mainTable">
             <thead>
               <tr>
-                <th>Pc ID</th>
+                <th>laptop ID</th>
                 <th>User Name</th>
                 <th>Build Date</th>
                 <th>Section</th>
                 <th>Location</th>
                 <th>Description</th>
+                <th>Model</th>
+                <th>Serial Number</th>
                 <th>Processor</th>
-                <th>Motherboard</th>
                 <th>Ram</th>
-                <th>GPU</th>
-                <th>Cooler</th>
                 <th>Storage</th>
-                <th>Casing</th>
-                <th>PowerSupply</th>
                 <th>Other</th>
+
                 <th>Remark</th>
                 <th>Edite</th>
                 <th>Delete</th>
@@ -347,8 +347,8 @@ const Pc = () => {
               {items.map((item) => (
                 <tr key={item._id}>
                   {/* ... ඔබගේ ඉතිරි කේතය ... */}
-                  <td>{item.pcId}</td>{" "}
-                  {/* මෙහිදී fullPcId එක කෙලින්ම භාවිතා කළ හැක */}
+                  <td>{item.laptopId}</td>{" "}
+                  {/* මෙහිදී fulllaptopId එක කෙලින්ම භාවිතා කළ හැක */}
                   <td>
                     {item.username.includes("update") ? (
                       <>
@@ -410,28 +410,21 @@ const Pc = () => {
                     )}
                   </td>
                   <td>
-                    <div className="scroll-cell">{item.Processor || "-"}</div>
+                    <div className="scroll-cell">{item.Model || "-"}</div>
                   </td>
                   <td>
-                    <div className="scroll-cell">{item.Motherboard || "-"}</div>
+                    <div className="scroll-cell">
+                      {item.SerialNumber || "-"}
+                    </div>
+                  </td>
+                  <td>
+                    <div className="scroll-cell">{item.Processor || "-"}</div>
                   </td>
                   <td>
                     <div className="scroll-cell">{item.Ram || "-"}</div>
                   </td>
                   <td>
-                    <div className="scroll-cell">{item.GPU || "-"}</div>
-                  </td>
-                  <td>
-                    <div className="scroll-cell">{item.Cooler || "-"}</div>
-                  </td>
-                  <td>
                     <div className="scroll-cell">{item.Storage || "-"}</div>
-                  </td>
-                  <td>
-                    <div className="scroll-cell">{item.Casing || "-"}</div>
-                  </td>
-                  <td>
-                    <div className="scroll-cell">{item.PowerSupply || "-"}</div>
                   </td>
                   <td>
                     <div className="scroll-cell">{item.Other || "-"}</div>
@@ -480,17 +473,17 @@ const Pc = () => {
         {isModalOpen && (
           <div className="popMain">
             <div className="popMainContainer">
-              <h2>Add Desktop Pc Item</h2>
+              <h2>Add Laptop Item</h2>
               <form onSubmit={handleNext}>
-                <label>PC ID</label>
+                <label>laptop ID</label>
                 <div
                   style={{ display: "flex", gap: "5px", marginBottom: "15px" }}
                 >
                   {/* 1. Dropdown කොටස */}
                   <select
                     className="inputStyle1"
-                    name="pcPrefix"
-                    value={formData.pcPrefix}
+                    name="laptopPrefix"
+                    value={formData.laptopPrefix}
                     onChange={handleChange}
                     style={{
                       width: "140px",
@@ -499,22 +492,22 @@ const Pc = () => {
                     }}
                     disabled={editingId !== null}
                   >
-                    <option value="IE/DESKTOP/PC/">IE/DESKTOP/PC/</option>
-                    {/* <option value="IE/DESKTOP/PC/">IE/EVENT/PC/</option> */}
+                    <option value="IE/LAPTOP/laptop/">IE/LAPTOP/laptop/</option>
+                    {/* <option value="IE/LAPTOP/laptop/">IE/EVENT/LAPTOP/</option> */}
                   </select>
 
                   {/* 2. අංක 3 ටයිප් කරන කොටස */}
                   <input
                     className="inputStyle"
                     type="text"
-                    name="pcNumber"
+                    name="laptopNumber"
                     placeholder="000"
                     maxLength="3" // 🟢 ඉලක්කම් 3කට සීමා කරයි
-                    value={formData.pcNumber}
+                    value={formData.laptopNumber}
                     onChange={(e) => {
                       // ඉලක්කම් පමණක් ටයිප් කිරීමට ඉඩ ලබා දීම
                       const val = e.target.value.replace(/\D/g, "");
-                      setFormData({ ...formData, pcNumber: val });
+                      setFormData({ ...formData, laptopNumber: val });
                     }}
                     disabled={editingId !== null}
                     style={{ marginBottom: "0" }}
@@ -606,22 +599,30 @@ const Pc = () => {
         {isSuccessModalOpen && (
           <div className="popMainSuccess">
             <div className="popMainContainerSuccess">
-              <h2> Destop Details</h2>
+              <h2> Laptop Details</h2>
               <form onSubmit={handleFinalSubmit}>
-                <label>Processor</label>
+                <label>Model</label>
                 <input
                   className="inputStyleSuccess"
                   type="text"
-                  name="Processor"
-                  value={formData.Processor}
+                  name="Model"
+                  value={formData.Model}
                   onChange={handleChange}
                 />
-                <label>Motherboard</label>
+                <label>SerialNumber</label>
                 <input
                   className="inputStyleSuccess"
                   type="text"
-                  name="Motherboard"
-                  value={formData.Motherboard}
+                  name="SerialNumber"
+                  value={formData.SerialNumber}
+                  onChange={handleChange}
+                />
+                <label>Processor </label>
+                <input
+                  className="inputStyleSuccess"
+                  type="text"
+                  name="Processor "
+                  value={formData.Processor}
                   onChange={handleChange}
                 />
                 <label>Ram</label>
@@ -632,44 +633,12 @@ const Pc = () => {
                   value={formData.Ram}
                   onChange={handleChange}
                 />
-                <label>GPU</label>
-                <input
-                  className="inputStyleSuccess"
-                  type="text"
-                  name="GPU"
-                  value={formData.GPU}
-                  onChange={handleChange}
-                />
-                <label>Cooler</label>
-                <input
-                  className="inputStyleSuccess"
-                  type="text"
-                  name="Cooler"
-                  value={formData.Cooler}
-                  onChange={handleChange}
-                />
                 <label>Storage</label>
                 <input
                   className="inputStyleSuccess"
                   type="text"
                   name="Storage"
                   value={formData.Storage}
-                  onChange={handleChange}
-                />
-                <label>Casing</label>
-                <input
-                  className="inputStyleSuccess"
-                  type="text"
-                  name="Casing"
-                  value={formData.Casing}
-                  onChange={handleChange}
-                />
-                <label>Power Supply</label>
-                <input
-                  className="inputStyleSuccess"
-                  type="text"
-                  name="PowerSupply"
-                  value={formData.PowerSupply}
                   onChange={handleChange}
                 />
                 <label>Other</label>
@@ -691,6 +660,17 @@ const Pc = () => {
                 />
 
                 <div className="submitContiner">
+                  <button
+                    type="button"
+                    className="submitButton"
+                    style={{ background: "#6c757d" }} // අළු පැහැයක් ලබා දී ඇත
+                    onClick={() => {
+                      setIsSuccessModalOpen(false); // දෙවන Modal එක වසන්න
+                      setIsModalOpen(true); // පළමු Modal එක නැවත අරින්න
+                    }}
+                  >
+                    Back
+                  </button>
                   <button
                     type="button"
                     className="submitButton submitClose"
@@ -719,7 +699,7 @@ const Pc = () => {
             >
               <h3 style={{ color: "#fff" }}>Confirm Deletion</h3>
               <p style={{ color: "#bbb", fontSize: "14px" }}>
-                Enter login password to delete this PC record:
+                Enter login password to delete this laptop record:
               </p>
 
               <input
@@ -755,4 +735,4 @@ const Pc = () => {
   );
 };
 
-export default Pc;
+export default Laptop;
