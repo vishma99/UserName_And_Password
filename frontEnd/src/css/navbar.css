@@ -1,0 +1,81 @@
+/* Navbar Styling */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: #1e2124;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  box-sizing: border-box;
+  border-bottom: 1px solid #333;
+  z-index: 100;
+}
+
+.nav-link {
+  color: #aaa;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #007bff;
+}
+
+.nav-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.logout-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  background: #2b2f33;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  min-width: 120px;
+  border: 1px solid #444;
+}
+
+.logout-btn-dropdown {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px;
+  width: 100%;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Footer Styling */
+.footer {
+  width: 100%;
+  padding: 20px;
+  background: #1e2124;
+  border-top: 1px solid #333;
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+}
+.logo-wrapper {
+  right: 0;
+  top: 0;
+}
+/* 🔴 CRITICAL: Ensure they don't appear in PDF */
+@media print {
+  .navbar,
+  .footer,
+  .no-print {
+    display: none !important;
+  }
+}

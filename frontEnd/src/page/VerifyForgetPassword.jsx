@@ -97,7 +97,7 @@ export default function VerifyForgetPassword() {
             ))}
           </div>
 
-          <button type="submit" style={buttonStyle}>:
+          <button type="submit" style={buttonStyle}>: 
             Verify Code
           </button>
         </form>

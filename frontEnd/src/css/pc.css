@@ -1,0 +1,292 @@
+.main1 {
+  background-color: #1a1d20;
+  color: #fff;
+  min-height: 100vh;
+  padding: 40px;
+  font-family: "sens-serif";
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 70px;
+}
+.mainHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  align-items: center;
+}
+.mainButton {
+  height: 40px;
+  padding: 5px 30px !important;
+  line-height: 1.2;
+  justify-content: center;
+
+  margin: 0;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 15%;
+}
+.mainTable {
+  width: 100%;
+  background: #2b2f33;
+  border-collapse: collapse;
+}
+.mainTable thead tr {
+  text-align: center;
+  border-bottom: 3px solid #444;
+}
+.mainTable thead th {
+  padding: 15px;
+}
+.mainTable tbody tr {
+  border-bottom: 1px solid #444;
+}
+.mainTable tbody td {
+  vertical-align: top;
+  white-space: pre-line; /* අලුත් පේළි පෙන්වීමට */
+  word-break: break-word; /* දිග වචන කැඩීමට */
+  padding: 10px;
+  line-height: 1.4;
+  color: #fff;
+  border-right: 1px solid #444;
+  height: auto;
+}
+.popMain {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.popMainContainer {
+  background: #222;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+  box-shadow: 0 4px 20px rgba(109, 71, 71, 0.5);
+}
+.popMainContainer h2 {
+  margin-top: 0px;
+}
+.popMainContainer .inputStyle {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background: #2b2f33;
+  color: #fff;
+}
+.popMainContainer .filetype {
+  cursor: pointer;
+}
+.submitContiner {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+.submitContiner .submitButton {
+  flex: 1;
+  padding: 10px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.submitContiner .submitSubmit {
+  background: #28a745;
+}
+.submitContiner .submitClose {
+  background: #dc3545;
+}
+.inputStyle1 {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background: #2b2f33;
+  color: #fff;
+
+  appearance: auto;
+}
+select.inputStyle1 option {
+  background: #2b2f33;
+  color: #fff;
+}
+.popMainSuccess {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.inputStyleSuccess {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background: #2b2f33;
+  color: #fff;
+
+  appearance: auto;
+}
+.popMainSuccess {
+  position: fixed;
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+.popMainContainerSuccess {
+  background: #222;
+  padding: 30px;
+  border-radius: 10px;
+  width: 400px;
+
+  /* 🟢 Scroll කිරීමට අදාළ වෙනස්කම් */
+  height: 700px;
+  max-height: 90vh; /* Screen එකට වඩා විශාල වීම වළක්වයි */
+  overflow-y: auto; /* අන්තර්ගතය වැඩි වූ විට scroll bar එකක් ලබා දෙයි */
+
+  box-shadow: 0 4px 20px rgba(109, 71, 71, 0.5);
+  box-sizing: border-box;
+}
+.popMainContainerSuccess h2 {
+  margin-top: 0px;
+}
+.popMainContainerSuccess::-webkit-scrollbar {
+  width: 8px;
+}
+
+.popMainContainerSuccess::-webkit-scrollbar-track {
+  background: #1a1d20;
+  border-radius: 10px;
+}
+
+.popMainContainerSuccess::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 10px;
+}
+
+.popMainContainerSuccess::-webkit-scrollbar-thumb:hover {
+  background: #007bff;
+}
+.popMainContainerSuccess .inputStyleSuccess {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #444;
+  background: #2b2f33;
+  color: #fff;
+}
+/* 🟢 Table එක වටා ඇති Container එක */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* තිරස් අතට scroll වීමට ඉඩ ලබා දෙයි */
+  margin-top: 20px;
+  border-radius: 8px;
+  background: #2b2f33;
+  box-sizing: border-box;
+}
+
+/* 🟢 Table එකේ සැකසුම් */
+.mainTable {
+  width: 250%; /* තීරු ගොඩක් ඇති නිසා 100% ට වඩා වැඩි අගයක් ලබා දිය යුතුයි */
+  border-collapse: collapse;
+  min-width: 1500px; /* Scroll bar එක පෙන්වීමට අවම පළලක් ලබා දීම */
+}
+
+/* 🟢 සෑම තීරුවකටම (Column) පළල ලබා දීම */
+.mainTable th {
+  width: 10%; /* ඔබ ඉල්ලූ පරිදි */
+  min-width: 120px; /* අකුරු පෑහීම වැළැක්වීමට අවම පළලක් */
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  white-space: nowrap; /* අකුරු පේළි දෙකකට යාම වළක්වයි */
+}
+.mainTable td {
+  width: 10%; /* ඔබ ඉල්ලූ පරිදි */
+  min-width: 120px; /* අකුරු පෑහීම වැළැක්වීමට අවම පළලක් */
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #444;
+  /* අකුරු පේළි දෙකකට යාම වළක්වයි */
+}
+
+/* Scroll bar එකේ පෙනුම ලස්සන කිරීමට (Optional) */
+.table-container::-webkit-scrollbar {
+  height: 8px; /* තිරස් scroll bar එකේ උස */
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: #1a1d20;
+}
+.printButton {
+  background-color: #28a745 !important; /* කොළ පාට */
+}
+/* පේළි 3කට වඩා වැඩි නම් scroll වීමට */
+.scroll-cell {
+  max-height: 4.5em; /* පේළි 3ක උස (1.5em x 3) */
+  overflow-y: auto;
+  line-height: 1.5em;
+  padding-right: 5px;
+  text-align: left;
+}
+
+/* Scroll bar එකේ පෙනුම පටු කිරීමට */
+.scroll-cell::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll-cell::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+}
+.table-container {
+  width: 100%;
+  /* 🟢 පේළි 7ක් පෙන්වීමට උස සීමා කිරීම */
+  max-height: 500px;
+  overflow-y: auto; /* ඉහළට සහ පහළට scroll වීමට */
+  overflow-x: auto; /* වමට සහ දකුණට scroll වීමට (දැනටමත් තිබේ නම් තබන්න) */
+  margin-top: 20px;
+  border-radius: 8px;
+  background: #2b2f33;
+  position: relative;
+  /* z-index: 1; */
+}
+
+/* 🟢 Header එක උඩම රැඳී තිබීමට (Sticky Header) */
+.mainTable thead th {
+  position: sticky;
+  top: 0;
+  background-color: #2b2f33; /* Header පසුබිම් වර්ණය */
+  z-index: 10;
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* යටින් මෘදු ඉරක් පෙන්වීමට */
+}

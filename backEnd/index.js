@@ -4,6 +4,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import authRouter from "./router/auth.js";
 import cardRouter from "./router/cardRouter.js";
+import pcRoutes from "./router/pcRouter.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ mongoose
 
 app.use("/api/auth", authRouter);
 app.use("/api/cards", cardRouter);
+app.use("/api/pcs", pcRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

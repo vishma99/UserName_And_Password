@@ -72,97 +72,99 @@ function Login() {
   };
 
   return (
-    <div
-      className="login-container"
-      style={{ textAlign: "center", marginTop: "50px" }}
-    >
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            placeholder="Username(Email)"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <br />
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            marginTop: "15px",
-          }}
-        >
-          {/* වම් පස කොටස: Checkbox + Label */}
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <input
-              type="checkbox"
-              id="rememberMe"
-              style={{
-                cursor: "pointer",
-                margin: 0,
-                width: "16px", // Checkbox එකට ස්ථාවර ප්‍රමාණයක්
-                height: "16px",
-              }}
-              onChange={(e) => setRememberMe(e.target.checked)}
-            />
-            <label
-              htmlFor="rememberMe"
-              style={{
-                cursor: "pointer",
-                fontSize: "13px",
-                whiteSpace: "nowrap", // 🟢 වචන පේළි දෙකකට කැඩීම වළක්වයි
-                userSelect: "none",
-                margin: 0,
-              }}
-            >
-              Remember Me
-            </label>
-          </div>
-
-          {/* දකුණු පස කොටස: Forget Password */}
+    <div className="bodyContainer">
+      <div
+        className="login-container"
+        style={{ textAlign: "center", marginTop: "50px" }}
+      >
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
           <div>
-            <span
-              style={{
-                color: "blue",
-                cursor: "pointer",
-                fontSize: "13px",
-                fontWeight: "500",
-              }}
-              onClick={handleForgotPassword}
-            >
-              Forgot Password?
-            </span>
+            <input
+              type="email"
+              placeholder="Username(Email)"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
           </div>
-        </div>
-        <br />
-        <button type="submit">Login</button>
-      </form>
+          <br />
+          <div>
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <br />
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              marginTop: "15px",
+            }}
+          >
+            {/* වම් පස කොටස: Checkbox + Label */}
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <input
+                type="checkbox"
+                id="rememberMe"
+                style={{
+                  cursor: "pointer",
+                  margin: 0,
+                  width: "16px", // Checkbox එකට ස්ථාවර ප්‍රමාණයක්
+                  height: "16px",
+                }}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <label
+                htmlFor="rememberMe"
+                style={{
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  whiteSpace: "nowrap", // 🟢 වචන පේළි දෙකකට කැඩීම වළක්වයි
+                  userSelect: "none",
+                  margin: 0,
+                }}
+              >
+                Remember Me
+              </label>
+            </div>
 
-      {message && <p style={{ color: "red" }}>{message}</p>}
-      <p style={{ marginTop: "15px" }}>
-        Don't have an account?{" "}
-        <span
-          style={{ color: "blue", cursor: "pointer" }}
-          onClick={() => navigate("/register")}
-        >
-          Register here
-        </span>
-      </p>
+            {/* දකුණු පස කොටස: Forget Password */}
+            <div>
+              <span
+                style={{
+                  color: "blue",
+                  cursor: "pointer",
+                  fontSize: "13px",
+                  fontWeight: "500",
+                }}
+                onClick={handleForgotPassword}
+              >
+                Forgot Password?
+              </span>
+            </div>
+          </div>
+          <br />
+          <button type="submit">Login</button>
+        </form>
+
+        {message && <p style={{ color: "red" }}>{message}</p>}
+        <p style={{ marginTop: "15px" }}>
+          Don't have an account?{" "}
+          <span
+            style={{ color: "blue", cursor: "pointer" }}
+            onClick={() => navigate("/register")}
+          >
+            Register here
+          </span>
+        </p>
+      </div>
     </div>
   );
 }

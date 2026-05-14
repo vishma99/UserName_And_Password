@@ -1,0 +1,66 @@
+/* Main Home Styles */
+.main-home-container {
+  padding: 40px;
+  text-align: center;
+  background-color: #0f1011; /* Dark background */
+  min-height: 80vh;
+}
+
+.home-title {
+  color: #fff;
+  margin-bottom: 40px;
+  font-size: 2rem;
+}
+
+.box-wrapper {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap; /* Mobile එකේදී එක යට එක වැටීමට */
+}
+
+.info-box {
+  background: #1e2124;
+  border: 1px solid #333;
+  padding: 30px;
+  border-radius: 15px;
+  width: 250px;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.info-box:hover {
+  transform: translateY(-10px); /* උඩට ඉස්සෙන effect එක */
+  border-color: #007bff;
+}
+
+.info-box h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #bbb;
+}
+
+.box-count {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 15px 0;
+  color: #007bff;
+}
+
+.box-desc {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* මැද බොක්ස් එකට වෙනස් පාටක් අවශ්‍ය නම් */
+.info-box.highlight {
+  border-top: 4px solid #28a745;
+}
+.info-box.highlight1 {
+  border-top: 4px solid #3d2ebf;
+}
+.info-box.highlight2 {
+  border-top: 4px solid #e33782;
+}
