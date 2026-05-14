@@ -34,7 +34,7 @@ function Login() {
       if (response.ok && data.success) {
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("isLoggedIn", "true");
-        navigate("/");
+        navigate("/main");
       } else {
         // අසාර්ථක නම් වැරැද්ද පෙන්වන්න
         setMessage(data.message || "Login failed!");
