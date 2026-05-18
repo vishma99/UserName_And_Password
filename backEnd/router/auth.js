@@ -82,7 +82,7 @@ router.get("/admin/approve-reset", async (req, res) => {
     user.otp = finalOtp;
 
     // 🟢 පරිශීලකයාට ලැබෙන OTP එක විනාඩි 10ක් වලංගු වේ
-    user.otpExpires = Date.now() + 600000;
+    user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
     user.isApprovedForget = true;
     await user.save();
 
@@ -161,36 +161,46 @@ router.post("/register", async (req, res) => {
 router.post("/reset-password", async (req, res) => {
   const { email, otp, newPassword } = req.body;
   try {
-    const user = await User.findOne({
-      username: email,
-      otp: otp,
-      otpExpires: { $gt: Date.now() },
-    });
+    // 1. මුලින්ම User ව සොයා ගන්න
+    const user = await User.findOne({ username: email });
 
     if (!user) {
-      return res.status(400).json({ message: "Invalid OTP or expired!" });
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found!" });
     }
 
-    // 🛡️ Admin Approve කර ඇත්දැයි නැවත පරීක්ෂා කිරීම
+    // 2. OTP එක හරිද බලන්න
+    if (user.otp !== otp) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid OTP code!" });
+    }
+
+    // 3. දැන් වේලාව Expire වේලාවට වඩා වැඩිනම් (Expired)
+    if (new Date() > user.otpExpires) {
+      return res
+        .status(400)
+        .json({ success: false, message: "OTP has expired!" });
+    }
+
+    // 4. Admin approval එක බලන්න
     if (!user.isApprovedForget) {
       return res
         .status(403)
-        .json({ message: "Admin has not approved this reset yet!" });
+        .json({ success: false, message: "Admin approval required!" });
     }
 
-    // Password එක update කිරීම (bcrypt භාවිතා කරන්න)
+    // සියල්ල හරි නම් Password එක update කරන්න...
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(newPassword, salt);
-
-    // වැඩේ ඉවර නිසා දත්ත clear කරන්න
     user.otp = undefined;
-    user.otpExpires = undefined;
-    user.isApprovedForget = false; // නැවත reset කරන්න ඉඩ නොදීමට
+    user.isApprovedForget = false;
     await user.save();
 
     res.json({ success: true, message: "Password updated successfully!" });
   } catch (error) {
-    res.status(500).json({ message: "Reset failed" });
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
