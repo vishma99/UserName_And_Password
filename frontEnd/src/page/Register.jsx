@@ -51,56 +51,57 @@ function Register() {
   };
 
   return (
-    <div
-      className="login-container"
-      style={{ textAlign: "center", marginTop: "50px" }}
-    >
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="email"
-            placeholder="Choose Username (Email)"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="password"
-            placeholder="Choose Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          
-        </div>
-        <br />
-        <div>
-          <input
-            type="password"
-            placeholder="confrom Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
-        <br />
-        <button type="submit">Register</button>
-      </form>
+    <div className="bodyContainer">
+      <div
+        className="login-container"
+        style={{ textAlign: "center", marginTop: "50px" }}
+      >
+        <h2>Register</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              type="email"
+              placeholder="Choose Username (Email)"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </div>
+          <br />
+          <div>
+            <input
+              type="password"
+              placeholder="Choose Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <br />
+          <div>
+            <input
+              type="password"
+              placeholder="confrom Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
+          <br />
+          <button type="submit">Register</button>
+        </form>
 
-      {message && <p style={{ color: "red" }}>{message}</p>}
-      <p style={{ marginTop: "15px" }}>
-        Already have an account?{" "}
-        <span
-          style={{ color: "blue", cursor: "pointer" }}
-          onClick={() => navigate("/login")}
-        >
-          Login here
-        </span>
-      </p>
+        {message && <p style={{ color: "red" }}>{message}</p>}
+        <p style={{ marginTop: "15px" }}>
+          Already have an account?{" "}
+          <span
+            style={{ color: "blue", cursor: "pointer" }}
+            onClick={() => navigate("/login")}
+          >
+            Login here
+          </span>
+        </p>
+      </div>
     </div>
   );
 }
