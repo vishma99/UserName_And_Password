@@ -37,10 +37,13 @@ router.post("/forgot-password", async (req, res) => {
         .status(400)
         .json({ success: false, message: "User not found" });
 
-    // ආරක්ෂාව සඳහා තාවකාලික Token එකක් සාදා සේව් කරමු (OTP එකම මෙයට පාවිච්චි කළ හැක)
     const tempToken = Math.floor(100000 + Math.random() * 900000).toString();
     user.otp = tempToken;
     user.isApprovedForget = false;
+
+    // 🟢 මෙන්න මේ පේළිය එක් කරන්න (විනාඩි 20ක් Admin approval එකට ලබා දෙන්න)
+    user.otpExpires = Date.now() + 1200000;
+
     await user.save();
 
     // 🟢 Admin ට යවන Approve Link එක
@@ -70,18 +73,16 @@ router.post("/forgot-password", async (req, res) => {
 // POST වෙනුවට GET භාවිතා කරන්න (Email links සඳහා)
 router.get("/admin/approve-reset", async (req, res) => {
   const { email, token } = req.query;
-
   try {
     const user = await User.findOne({ username: email, otp: token });
 
-    if (!user) {
-      return res.send("<h2>Invalid or expired approval link!</h2>");
-    }
+    if (!user) return res.send("<h2>Invalid or expired approval link!</h2>");
 
-    // 🟢 අලුත් OTP එකක් සාදා පරිශීලකයාට යැවීම
     const finalOtp = Math.floor(100000 + Math.random() * 900000).toString();
     user.otp = finalOtp;
-    user.otpExpires = Date.now() + 600000; // විනාඩි 10යි
+
+    // 🟢 පරිශීලකයාට ලැබෙන OTP එක විනාඩි 10ක් වලංගු වේ
+    user.otpExpires = Date.now() + 600000;
     user.isApprovedForget = true;
     await user.save();
 
