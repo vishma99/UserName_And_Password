@@ -30,7 +30,8 @@ export default function Home() {
 
   const API_URL = `${API_BASE_URL}/cards`;
   const currentDateTime = new Date().toLocaleString();
-
+  const [isVerifyForEdit, setIsVerifyForEdit] = useState(false);
+  const [pendingEditCard, setPendingEditCard] = useState(null);
   useEffect(() => {
     fetchCards();
   }, []);
@@ -132,7 +133,12 @@ export default function Home() {
     setSelectedCardId(id);
     setIsDeleteModalOpen(true);
   };
-
+  const triggerEditVerify = (card, e) => {
+    e.stopPropagation();
+    setPendingEditCard(card); // පසුව පාවිච්චි කිරීමට card එක තබා ගන්න
+    setIsVerifyForEdit(true); // Password Modal එක පෙන්වන්න
+    setIsDeleteModalOpen(true); // පවතින Password Modal එකම පාවිච්චි කරමු
+  };
   const confirmAndDelete = async () => {
     if (!deletePassword) return alert("Please enter password.");
 
@@ -155,11 +161,41 @@ export default function Home() {
       alert(err.response?.data?.message || "Error deleting card.");
     }
   };
+  const confirmAndEdit = async () => {
+    if (!deletePassword) return alert("Please enter password.");
 
+    try {
+      const userStr = localStorage.getItem("user");
+      const loggedInUser = JSON.parse(userStr);
+      const username = loggedInUser.username;
+
+      const response = await axios.post(
+        `${API_BASE_URL}/auth/verify-password`,
+        {
+          username,
+          password: deletePassword,
+        },
+      );
+
+      if (response.data.success) {
+        setIsDeleteModalOpen(false);
+        setIsVerifyForEdit(false); // සාර්ථක නම් පමණක් false කරන්න
+        setDeletePassword("");
+        openEditModal(pendingEditCard);
+      }
+    } catch (err) {
+      // 🟢 මෙතැනදී setIsVerifyForEdit(false) නොකරන නිසා Modal එක දිගටම පවතී
+      alert(err.response?.data?.message || "Invalid password.");
+      setDeletePassword(""); // වැරදි password එක ඉවත් කර නැවත ගැසීමට ඉඩ දෙන්න
+    }
+    // 🔴 මෙතැන තිබූ finally කොටස ඉවත් කරන ලදී
+  };
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
+    setIsVerifyForEdit(false);
     setDeletePassword("");
     setSelectedCardId(null);
+    setPendingEditCard(null);
   };
   return (
     <>
@@ -430,7 +466,7 @@ export default function Home() {
                     <div className="card-actions">
                       <button
                         className="edit-btn"
-                        onClick={() => openEditModal(card)}
+                        onClick={(e) => triggerEditVerify(card, e)} // 👈 මෙතැන වෙනස් කළා
                       >
                         EDIT
                       </button>
@@ -518,10 +554,13 @@ export default function Home() {
                 }}
               >
                 <h3 style={{ color: "#fff", marginBottom: "20px" }}>
-                  Confirm Deletion
+                  {isVerifyForEdit
+                    ? "Confirm Password to Edit"
+                    : "Confirm Deletion"}
                 </h3>
                 <p style={{ color: "#bbb", fontSize: "14px" }}>
-                  Enter login password to delete this card:
+                  Enter login password to{" "}
+                  {isVerifyForEdit ? "edit this card" : "delete this card"}:
                 </p>
 
                 <input
@@ -543,7 +582,9 @@ export default function Home() {
 
                 <div style={{ display: "flex", gap: "10px" }}>
                   <button
-                    onClick={confirmAndDelete}
+                    onClick={
+                      isVerifyForEdit ? confirmAndEdit : confirmAndDelete
+                    } // 👈 මෙතැනින් තීරණය කරයි කුමක් කළ යුතුද කියා
                     style={{
                       background: "#dc3545",
                       color: "#fff",
@@ -555,7 +596,7 @@ export default function Home() {
                       cursor: "pointer",
                     }}
                   >
-                    DELETE
+                    {isVerifyForEdit ? "VERIFY" : "DELETE"}
                   </button>
 
                   <button

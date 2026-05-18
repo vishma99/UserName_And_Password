@@ -86,4 +86,26 @@ router.put("/update/:id", async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
+router.post("/verify-password", async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ username });
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
+    // Password එක සමානදැයි බලයි
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid password" });
+
+    // Password එක හරි නම් success: true යවයි
+    res.json({ success: true, message: "Verified" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
 export default router;

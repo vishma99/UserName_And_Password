@@ -27,7 +27,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    isApproved:{type:Boolean,default:false},
+    isApproved: { type: Boolean, default: false },
+    isApprovedForget: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

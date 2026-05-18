@@ -23,7 +23,8 @@ const Pc = () => {
   const [editingId, setEditingId] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const navigate = useNavigate();
-
+  const [isEditVerifyModalOpen, setIsEditVerifyModalOpen] = useState(false);
+  const [editPassword, setEditPassword] = useState("");
   // 3. State for form data
   const [formData, setFormData] = useState({
     username: "",
@@ -239,7 +240,36 @@ const Pc = () => {
       alert(err.response?.data?.message || "Error deleting data.");
     }
   };
+  const handleEditInitiate = (item) => {
+    setSelectedPcId(item._id);
+    setFormData({ ...item, pcPrefix: "", pcNumber: item.pcId });
+    setIsEditVerifyModalOpen(true);
+  };
 
+  const confirmAndEdit = async () => {
+    if (!editPassword) return alert("Please enter password.");
+
+    try {
+      const userStr = localStorage.getItem("user");
+      const loggedInUser = JSON.parse(userStr);
+      const username = loggedInUser.username;
+
+      // Backend එක හරහා Password එක Verify කිරීම
+      const response = await axios.post(
+        `${API_BASE_URL}/pcs/verify-password`, // මේ සඳහා Backend එකේ වෙනම route එකක් තිබිය යුතුය
+        { username, password: editPassword },
+      );
+
+      if (response.data.success) {
+        setIsEditVerifyModalOpen(false); // Password modal වසන්න
+        setEditPassword("");
+        setEditingId(selectedPcId);
+        setIsModalOpen(true); // නියම Edit Form එක විවෘත කරන්න
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || "Invalid password.");
+    }
+  };
   const closeDeleteModal = () => {
     setIsDeleteModalOpen(false);
     setDeletePassword("");
@@ -450,7 +480,7 @@ const Pc = () => {
                         borderRadius: "4px",
                         cursor: "pointer",
                       }}
-                      onClick={() => handleEdit(item)}
+                      onClick={() => handleEditInitiate(item)} // වෙනස් කළා
                     >
                       EDIT
                     </button>
@@ -740,6 +770,48 @@ const Pc = () => {
                 </button>
                 <button
                   onClick={closeDeleteModal}
+                  className="submitButton"
+                  style={{ background: "#666" }}
+                >
+                  CANCEL
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {isEditVerifyModalOpen && (
+          <div className="popMain" style={{ zIndex: 3000 }}>
+            <div
+              className="popMainContainer"
+              style={{ textAlign: "center", width: "350px" }}
+            >
+              <h3 style={{ color: "#fff" }}>Confirm Edit</h3>
+              <p style={{ color: "#bbb", fontSize: "14px" }}>
+                Enter login password to edit this PC record:
+              </p>
+
+              <input
+                type="password"
+                className="inputStyle"
+                value={editPassword}
+                onChange={(e) => setEditPassword(e.target.value)}
+                placeholder="Enter Password"
+                style={{ marginBottom: "20px" }}
+              />
+
+              <div className="submitContiner">
+                <button
+                  onClick={confirmAndEdit}
+                  className="submitButton submitSubmit"
+                >
+                  VERIFY
+                </button>
+                <button
+                  onClick={() => {
+                    setIsEditVerifyModalOpen(false);
+                    setEditPassword("");
+                  }}
                   className="submitButton"
                   style={{ background: "#666" }}
                 >
