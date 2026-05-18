@@ -55,41 +55,43 @@ function Forget() {
   };
 
   return (
-    <div
-      className="login-container"
-      style={{ textAlign: "center", marginTop: "50px" }}
-    >
-      <h2>Reset Password</h2>
-      <p style={{ fontSize: "14px", color: "gray" }}>
-        Resetting password for: {email}
-      </p>
+    <div className="bodyContainer">
+      <div
+        className="login-container"
+        style={{ textAlign: "center", marginTop: "50px" }}
+      >
+        <h2>Reset Password</h2>
+        <p style={{ fontSize: "14px", color: "gray" }}>
+          Resetting password for: {email}
+        </p>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            type="password"
-            placeholder="New Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <br />
-        <div>
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <input
+              type="password"
+              placeholder="New Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <br />
+          <div>
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        <br />
-        <button type="submit">Update Password</button>
-      </form>
+          <br />
+          <button type="submit">Update Password</button>
+        </form>
 
-      {message && <p style={{ color: "red" }}>{message}</p>}
+        {message && <p style={{ color: "red" }}>{message}</p>}
+      </div>
     </div>
   );
 }

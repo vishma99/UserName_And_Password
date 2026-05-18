@@ -77,35 +77,37 @@ export default function Verify() {
   if (!email) return null;
 
   return (
-    <div style={containerStyle}>
-      <div className="login-container" style={cardStyle}>
-        <h2 style={{ marginBottom: "10px" }}>Verify Email</h2>
-        <p style={{ fontSize: "14px", color: "#666", marginBottom: "30px" }}>
-          Enter the 6-digit code sent to your email. <br />
-          <small>({email})</small>
-        </p>
+    <div className="bodyContainer">
+      <div style={containerStyle}>
+        <div className="login-container" style={cardStyle}>
+          <h2 style={{ marginBottom: "10px" }}>Verify Email</h2>
+          <p style={{ fontSize: "14px", color: "#666", marginBottom: "30px" }}>
+            Enter the 6-digit code sent to your email. <br />
+            <small>({email})</small>
+          </p>
 
-        <form onSubmit={handleSubmit}>
-          <div style={otpContainerStyle}>
-            {otpRegister.map((data, index) => (
-              <input
-                key={index}
-                type="text"
-                maxLength="1"
-                value={data}
-                ref={(el) => (inputRefs.current[index] = el)}
-                onChange={(e) => handleChange(e.target, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                style={otpInputStyle}
-                autoFocus={index === 0}
-              />
-            ))}
-          </div>
+          <form onSubmit={handleSubmit}>
+            <div style={otpContainerStyle}>
+              {otpRegister.map((data, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength="1"
+                  value={data}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                  onChange={(e) => handleChange(e.target, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  style={otpInputStyle}
+                  autoFocus={index === 0}
+                />
+              ))}
+            </div>
 
-          <button type="submit" style={buttonStyle}>
-            Verify Code
-          </button>
-        </form>
+            <button type="submit" style={buttonStyle}>
+              Verify Code
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
