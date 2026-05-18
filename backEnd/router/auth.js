@@ -32,81 +32,32 @@ router.post("/forgot-password", async (req, res) => {
   const { email } = req.body;
   try {
     const user = await User.findOne({ username: email });
-    if (!user)
+    if (!user) {
       return res
         .status(400)
-        .json({ success: false, message: "User not found" });
+        .json({ success: false, message: "This email is not registered!" });
+    }
 
-    const tempToken = Math.floor(100000 + Math.random() * 900000).toString();
-    user.otp = tempToken;
-    user.isApprovedForget = false;
-
-    // 🟢 මෙන්න මේ පේළිය එක් කරන්න (විනාඩි 20ක් Admin approval එකට ලබා දෙන්න)
-    user.otpExpires = Date.now() + 1200000;
-
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.otp = otp;
+    user.otpExpires = Date.now() + 600000;
     await user.save();
 
-    // 🟢 Admin ට යවන Approve Link එක
-    // මෙහි 'http://localhost:5000' වෙනුවට ඔබේ Server URL එක දාන්න
-    const approveLink = `https://username-and-password.onrender.com/api/auth/admin/approve-reset?email=${email}&token=${tempToken}`;
-
-    const adminMailHtml = `
-      <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd;">
-        <h2>Password Reset Request</h2>
-        <p>User <b>${email}</b> requested a password reset.</p>
-        <p>Click the button below to approve and send OTP to the user:</p>
-        <a href="${approveLink}" style="background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">
-          APPROVE REQUEST
-        </a>
-      </div>`;
-
-    await sendEmail(
-      "vishmagunawardhana99@gmail.com",
-      "Action Required: PW Reset",
-      adminMailHtml,
-    );
-    res.json({ success: true, message: "Approval request sent to admin!" });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "Error!" });
-  }
-});
-// POST වෙනුවට GET භාවිතා කරන්න (Email links සඳහා)
-router.get("/admin/approve-reset", async (req, res) => {
-  const { email, token } = req.query;
-  try {
-    const user = await User.findOne({ username: email, otp: token });
-
-    if (!user) return res.send("<h2>Invalid or expired approval link!</h2>");
-
-    const finalOtp = Math.floor(100000 + Math.random() * 900000).toString();
-    user.otp = finalOtp;
-
-    // 🟢 පරිශීලකයාට ලැබෙන OTP එක විනාඩි 10ක් වලංගු වේ
-    user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
-    user.isApprovedForget = true;
-    await user.save();
-
-    const userMailHtml = `
+    const mailHtml = `
       <div style="font-family: Arial, sans-serif; padding: 20px;">
-        <h2>Admin Approved Your Request</h2>
-        <p>Your password reset request has been approved.</p>
-        <p>Your OTP code is: <b style="color: #007bff; font-size: 24px;">${finalOtp}</b></p>
+        <h2>Password Reset Request</h2>
+        <p>Your OTP code for password reset is: <b style="color: #007bff;">${otp}</b></p>
         <p>This code will expire in 10 minutes.</p>
       </div>`;
 
-    await sendEmail(user.username, "Your Password Reset OTP", userMailHtml);
-
-    // Admin ගේ Browser එකේ පෙන්වන පණිවිඩය
-    res.send(`
-      <div style="text-align: center; margin-top: 50px; font-family: Arial;">
-        <h2 style="color: #28a745;">Success!</h2>
-        <p>Request approved. OTP sent to <b>${email}</b>.</p>
-      </div>
-    `);
+    await sendEmail(email, "Your OTP Code", mailHtml);
+    res.json({ success: true, message: "OTP sent successfully!" });
   } catch (error) {
-    res.status(500).send("Approval failed!");
+    console.error("Forgot PW Error:", error.message);
+    res.status(500).json({ success: false, message: "Email sending failed" });
   }
 });
+
 // 2. Register Route
 router.post("/register", async (req, res) => {
   const { username, password } = req.body;
@@ -159,48 +110,23 @@ router.post("/register", async (req, res) => {
 
 // 3. Reset Password Route
 router.post("/reset-password", async (req, res) => {
-  const { email, otp, newPassword } = req.body;
+  const { email, password } = req.body;
   try {
-    // 1. මුලින්ම User ව සොයා ගන්න
     const user = await User.findOne({ username: email });
-
-    if (!user) {
+    if (!user)
       return res
         .status(400)
         .json({ success: false, message: "User not found!" });
-    }
 
-    // 2. OTP එක හරිද බලන්න
- if (String(user.otp) !== String(otp)) {
-   return res
-     .status(400)
-     .json({ success: false, message: "Invalid OTP code!" });
- }
-
-    // 3. දැන් වේලාව Expire වේලාවට වඩා වැඩිනම් (Expired)
-    if (new Date() > user.otpExpires) {
-      return res
-        .status(400)
-        .json({ success: false, message: "OTP has expired!" });
-    }
-
-    // 4. Admin approval එක බලන්න
-    if (!user.isApprovedForget) {
-      return res
-        .status(403)
-        .json({ success: false, message: "Admin approval required!" });
-    }
-
-    // සියල්ල හරි නම් Password එක update කරන්න...
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
-    user.otp = undefined;
-    user.isApprovedForget = false;
+    user.password = await bcrypt.hash(password, salt);
+    user.otp = null;
+    user.otpExpires = null;
     await user.save();
 
     res.json({ success: true, message: "Password updated successfully!" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
@@ -307,28 +233,7 @@ router.post("/verify-and-delete/:id", async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
-router.post("/verify-password", async (req, res) => {
-  const { username, password } = req.body;
-  try {
-    const user = await User.findOne({ username });
-    if (!user)
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
 
-    // Password එක සමානදැයි බලයි
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid password" });
-
-    // Password එක හරි නම් success: true යවයි
-    res.json({ success: true, message: "Verified" });
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Server error" });
-  }
-});
 router.get("/test", (req, res) => res.send("Auth router is working!"));
 
 export default router;
