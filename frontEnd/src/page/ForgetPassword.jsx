@@ -12,14 +12,18 @@ function Forget() {
   // Verify පිටුවෙන් එවූ email එක ලබා ගැනීම
   const email = location.state?.email;
 
+  // Forget.jsx ඇතුළත handleSubmit ශ්‍රිතය මෙසේ වෙනස් කරන්න
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Password දෙක සමානදැයි බැලීම
     if (password !== confirmPassword) {
       setMessage("Passwords do not match!");
       return;
     }
+
+    // 🟢 කලින් පිටුවෙන් එවූ OTP එක ලබා ගැනීම (location.state හරහා)
+    const otp = location.state?.otp;
 
     try {
       const response = await fetch(
@@ -27,13 +31,18 @@ function Forget() {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+          // 🟢 මෙන්න මෙතැනට otp සහ newPassword නිවැරදිව ඇතුළත් කරන්න
+          body: JSON.stringify({
+            email: email,
+            otp: otp,
+            newPassword: password,
+          }),
         },
       );
 
       const data = await response.json();
 
-      if (response.ok && data.success) {
+      if (response.ok) {
         alert("Password reset successful! Please login.");
         navigate("/login");
       } else {
