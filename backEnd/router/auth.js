@@ -171,18 +171,18 @@ router.post("/reset-password", async (req, res) => {
     }
 
     // 2. OTP එක හරිද බලන්න
-    if (String(user.otp) !== String(otp)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Invalid OTP code!" });
-    }
+    // if (String(user.otp) !== String(otp)) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: "Invalid OTP code!" });
+    // }
 
-    // 3. දැන් වේලාව Expire වේලාවට වඩා වැඩිනම් (Expired)
-    if (new Date() > user.otpExpires) {
-      return res
-        .status(400)
-        .json({ success: false, message: "OTP has expired!" });
-    }
+    // // 3. දැන් වේලාව Expire වේලාවට වඩා වැඩිනම් (Expired)
+    // if (new Date() > user.otpExpires) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: "OTP has expired!" });
+    // }
 
     // 4. Admin approval එක බලන්න
     if (!user.isApprovedForget) {
