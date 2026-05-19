@@ -16,8 +16,8 @@
 }
 .mainButton {
   height: 40px;
-  padding: 5px 30px !important;
-  line-height: 1.2;
+  padding: 5px 70px !important;
+  line-height: 1;
   justify-content: center;
 
   margin: 0;
@@ -290,4 +290,31 @@ select.inputStyle1 option {
   background-color: #2b2f33; /* Header පසුබිම් වර්ණය */
   z-index: 10;
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* යටින් මෘදු ඉරක් පෙන්වීමට */
+}
+/* Desktop එකේ බොත්තම් පෙළගැස්ම (දැනටමත් ඇති style වලට අමතරව) */
+.header-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  width: 50%; /* බොත්තම් ටික දකුණු පසට තබා ගැනීමට */
+}
+
+/* 📱 Mobile Responsive කොටස */
+@media (max-width: 768px) {
+  .mainHeader {
+    flex-direction: column; /* Header එකේ මාතෘකාව සහ බොත්තම් එක යට එක වැටීමට */
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .header-buttons {
+    width: 100%; /* බොත්තම් අඩංගු කොටස සම්පූර්ණ පළලම ගනී */
+    flex-direction: column; /* බොත්තම් දෙක එක යට එක වැටීමට */
+    justify-content: center;
+  }
+
+  .mainButton {
+    width: 100% !important; /* Mobile වලදී බොත්තම සම්පූර්ණ පළලම ගනී */
+    height: 45px; /* ස්පර්ශ කිරීමට පහසු වීමට මදක් ලොකු කළා */
+  }
 }

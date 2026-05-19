@@ -15,12 +15,22 @@
   border-bottom: 1px solid #333;
   z-index: 100;
 }
-
+.nav-links-container {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
 .nav-link {
   color: #aaa;
   cursor: pointer;
   font-size: 14px;
   transition: color 0.3s;
+}
+.hamburger {
+  display: none; /* Desktop එකේදී හංගන්න */
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
 }
 
 .nav-link:hover {
@@ -78,4 +88,53 @@
   .no-print {
     display: none !important;
   }
+}
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex; /* Mobile වලදී පෙන්වන්න */
+  }
+
+  .nav-links-container {
+    position: absolute;
+    top: 100px;
+    left: -100%; /* මුලින් හංගන්න */
+    flex-direction: column;
+    background: #1e2124;
+    width: 100%;
+    height: calc(100vh - 100px);
+    padding: 40px 0;
+    transition: 0.4s ease-in-out;
+    border-bottom: 1px solid #333;
+    align-items: center;
+    gap: 30px;
+    z-index: 999;
+  }
+
+  .nav-links-container.active {
+    left: 0; /* Menu එක එළියට ගන්න */
+  }
+
+  .logout-dropdown {
+    position: relative; /* Mobile වලදී පල්ලෙහාට වැටීමට */
+    top: 10px;
+    right: auto;
+    box-shadow: none;
+  }
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  transition: 0.3s;
+}
+
+.bar.open:nth-child(1) {
+  transform: rotate(-45deg) translate(-5px, 6px);
+}
+.bar.open:nth-child(2) {
+  opacity: 0;
+}
+.bar.open:nth-child(3) {
+  transform: rotate(45deg) translate(-5px, -6px);
 }

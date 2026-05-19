@@ -199,7 +199,7 @@ export default function Home() {
   };
   return (
     <>
-      <div className="bodyContainer">
+      <div className="bodyContainer bodyContainer1">
         <Navbar />
         <div className="home-container">
           {/* -----------------------------------------------------------
@@ -225,39 +225,17 @@ export default function Home() {
                 marginBottom: "40px",
               }}
             >
-              <button
-                onClick={() => setIsModalOpen(true)}
-                style={{
-                  width: "auto",
-                  background: "#007bff",
-                  color: "#fff",
-                  border: "none",
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              >
-                + ADD NEW CARD
-              </button>
-              <button
-                onClick={handlePrint}
-                style={{
-                  width: "auto",
-                  background: "#28a745",
-                  color: "#fff",
-                  border: "none",
-                  padding: "10px 20px",
-                  borderRadius: "8px",
-                  cursor: "pointer",
-                  fontWeight: "bold",
-                  textTransform: "uppercase",
-                }}
-              >
-                DOWNLOAD / PRINT ALL
-              </button>
-
+              <div className="button-group">
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className="action-btn add-btn"
+                >
+                  + ADD NEW CARD
+                </button>
+                <button onClick={handlePrint} className="action-btn print-btn">
+                  DOWNLOAD / PRINT ALL
+                </button>
+              </div>
               {/* <div className="logo-wrapper">
                 <img
                   src="/logo/logo.jpg"

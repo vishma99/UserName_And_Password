@@ -723,11 +723,23 @@ const Pc = () => {
                 <div className="submitContiner">
                   <button
                     type="button"
+                    className="submitButton"
+                    style={{ background: "#6c757d" }} // අළු පැහැයක් ලබා දී ඇත
+                    onClick={() => {
+                      setIsSuccessModalOpen(false); // දෙවන Modal එක වසන්න
+                      setIsModalOpen(true); // පළමු Modal එක නැවත අරින්න
+                    }}
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
                     className="submitButton submitClose"
                     onClick={() => setIsSuccessModalOpen(false)}
                   >
                     Cancel
                   </button>
+
                   <button
                     type="submit"
                     className="submitButton submitSubmit"

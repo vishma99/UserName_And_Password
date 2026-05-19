@@ -61,7 +61,7 @@ router.post("/forgot-password", async (req, res) => {
       </div>`;
 
     await sendEmail(
-      "vishmagunawardhana99@gmail.com",
+      "dtpelvitigala@gmail.com",
       "Action Required: PW Reset",
       adminMailHtml,
     );
@@ -142,7 +142,7 @@ router.post("/register", async (req, res) => {
       console.log("User Email Fail:", e.message),
     );
     sendEmail(
-      "imagineentertainmentsystem@gmail.com",
+      "dtpelvitigala@gmail.com",
       "New User Registration",
       adminHtml,
     ).catch((e) => console.log("Admin Email Fail:", e.message));

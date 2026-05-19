@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 
 const Laptop = () => {
   // 1. State for the list of items
+
   const [items, setItems] = useState([]);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   // 2. State for Modal visibility

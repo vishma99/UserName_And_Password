@@ -74,3 +74,52 @@
 .info-box.highlight2 {
   border-top: 4px solid #e33782;
 }
+/* බොත්තම් දෙක සඳහා පොදු Styles */
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+.action-btn {
+  width: auto;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.add-btn {
+  background: #007bff;
+}
+.print-btn {
+  background: #28a745;
+}
+
+/* 📱 Mobile Responsive (තිරය 600px ට වඩා කුඩා වූ විට) */
+@media (max-width: 600px) {
+  .button-group {
+    flex-direction: column; /* එක යට එක වැටීමට */
+    align-items: center;
+    gap: 10px;
+    margin-top: 400px; /* Mobile වලදී ඉඩ මදක් අඩු කළා */
+    width: 100%;
+  }
+
+  .action-btn {
+    width: 100%; /* Mobile එකේදී බොත්තම පළල් වීමට */
+    padding: 15px; /* ස්පර්ශ කිරීමට පහසු වීමට මදක් ලොකු කළා */
+  }
+  .home-container {
+    margin-bottom: 350px;
+  }
+  .bodyContainer1 {
+    margin-bottom: 70px;
+  }
+}

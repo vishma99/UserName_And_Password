@@ -4,6 +4,7 @@ import "../css/navbar.css";
 
 const Navbar = () => {
   const [showLogout, setShowLogout] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -12,13 +13,19 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  // Close dropdown when clicking outside
   useEffect(() => {
-    const closeLogout = (e) => {
+    const handleClickOutside = (e) => {
       if (!e.target.closest(".logo-wrapper")) setShowLogout(false);
+      // Hamburger එක සහ Menu එකෙන් පිටත ක්ලික් කළ විට වැසීමට
+      if (
+        !e.target.closest(".nav-links-container") &&
+        !e.target.closest(".hamburger")
+      ) {
+        setIsMenuOpen(false);
+      }
     };
-    window.addEventListener("click", closeLogout);
-    return () => window.removeEventListener("click", closeLogout);
+    window.addEventListener("click", handleClickOutside);
+    return () => window.removeEventListener("click", handleClickOutside);
   }, []);
 
   return (
@@ -32,14 +39,39 @@ const Navbar = () => {
           HOME
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-          <span className="nav-link" onClick={() => navigate("/")}>
+        <div className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <span className={isMenuOpen ? "bar open" : "bar"}></span>
+          <span className={isMenuOpen ? "bar open" : "bar"}></span>
+          <span className={isMenuOpen ? "bar open" : "bar"}></span>
+        </div>
+
+        {/* 🟢 මෙන්න මෙතැනට nav-links-container එක එක් කරන්න */}
+        <div className={`nav-links-container ${isMenuOpen ? "active" : ""}`}>
+          <span
+            className="nav-link"
+            onClick={() => {
+              navigate("/");
+              setIsMenuOpen(false);
+            }}
+          >
             Password & UserName
           </span>
-          <span className="nav-link" onClick={() => navigate("/pc")}>
+          <span
+            className="nav-link"
+            onClick={() => {
+              navigate("/pc");
+              setIsMenuOpen(false);
+            }}
+          >
             PC Inventory
           </span>
-          <span className="nav-link" onClick={() => navigate("/laptop")}>
+          <span
+            className="nav-link"
+            onClick={() => {
+              navigate("/laptop");
+              setIsMenuOpen(false);
+            }}
+          >
             Laptop Inventory
           </span>
 
@@ -50,8 +82,8 @@ const Navbar = () => {
               onClick={() => setShowLogout(!showLogout)}
               className="nav-avatar"
               style={{
-                width: "70px",
-                height: "70px",
+                width: "60px", // Mobile වලදී ඕනෑවට වඩා විශාල වීම වැළැක්වීමට 60px සුදුසුයි
+                height: "60px",
                 borderRadius: "20px",
                 border: showLogout ? "2px solid #ff4d4d" : "1px solid #444",
               }}
